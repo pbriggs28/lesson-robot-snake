@@ -22,7 +22,7 @@ public class Board extends JPanel implements ActionListener {
     private final int DOT_SIZE = 10;
     private final int ALL_DOTS = 900;
     private final int RAND_POS = 29;
-    private final int DELAY = 140;
+    private final int DELAY = 120;
 
     private final int x[] = new int[ALL_DOTS];
     private final int y[] = new int[ALL_DOTS];
@@ -67,7 +67,7 @@ public class Board extends JPanel implements ActionListener {
 
     private void initGame() {
 
-        dots = 3;
+        dots = 1;
 
         for (int z = 0; z < dots; z++) {
             x[z] = 50 - z * 10;
@@ -94,11 +94,11 @@ public class Board extends JPanel implements ActionListener {
             g.drawImage(apple, apple_x, apple_y, this);
 
             for (int z = 0; z < dots; z++) {
-                if (z == 0) {
-                    g.drawImage(head, x[z], y[z], this);
-                } else {
+//                if (z == 0) {
+//                    g.drawImage(head, x[z], y[z], this);
+//                } else {
                     g.drawImage(ball, x[z], y[z], this);
-                }
+//                }
             }
 
             Toolkit.getDefaultToolkit().sync();
@@ -137,19 +137,23 @@ public class Board extends JPanel implements ActionListener {
         }
 
         if (leftDirection) {
-            x[0] -= DOT_SIZE;
+//            x[0] -= DOT_SIZE;
+        	apple_x -= DOT_SIZE;
         }
 
         if (rightDirection) {
-            x[0] += DOT_SIZE;
+//            x[0] += DOT_SIZE;
+        	apple_x += DOT_SIZE;
         }
 
         if (upDirection) {
-            y[0] -= DOT_SIZE;
+//            y[0] -= DOT_SIZE;
+        	apple_y -= DOT_SIZE;
         }
 
         if (downDirection) {
-            y[0] += DOT_SIZE;
+//            y[0] += DOT_SIZE;
+        	apple_y += DOT_SIZE;
         }
     }
 
