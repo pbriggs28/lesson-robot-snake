@@ -22,7 +22,7 @@ public class Board extends JPanel implements ActionListener {
     private final int DOT_SIZE = 15;
     private final int ALL_DOTS = 900;
     private final int RAND_POS = 29;
-    private final int DELAY = 200;
+    private final int DELAY = 120;
 
     private final int x[] = new int[ALL_DOTS];
     private final int y[] = new int[ALL_DOTS];
@@ -31,11 +31,18 @@ public class Board extends JPanel implements ActionListener {
     private int apple_x;
     private int apple_y;
 
+    private int finish_x;
+    private int finish_y;
+
     private boolean leftDirection = false;
     private boolean rightDirection = true;
     private boolean upDirection = false;
     private boolean downDirection = false;
+    
     private boolean inGame = true;
+    private boolean gameWon = false;
+    
+    
 
     private Timer timer;
     private Image ball;
@@ -65,8 +72,24 @@ public class Board extends JPanel implements ActionListener {
         head = iih.getImage();
     }
 
+    private void randomWalls() {
+//    	Math.ra
+//    	for(int i = 0; i < )
+    }
+    
     private void initGame() {
+    	
+//    	finishX = 
 
+    	// Generate finish point
+        int r;
+        r = (int) (B_WIDTH/DOT_SIZE);
+        finish_x = ((r * DOT_SIZE));
+
+        r = (int) (0);
+        finish_y = ((r * DOT_SIZE));
+
+        // generate walls
         dots = 132;
 
 		x[1] = 15;
@@ -361,6 +384,7 @@ public class Board extends JPanel implements ActionListener {
         if (inGame) {
 
             g.drawImage(apple, apple_x, apple_y, this);
+            g.drawImage(head, finish_x, finish_y, this);
 
             for (int z = 0; z < dots; z++) {
 //                if (z == 0) {
@@ -372,6 +396,8 @@ public class Board extends JPanel implements ActionListener {
 
             Toolkit.getDefaultToolkit().sync();
 
+        } else if(gameWon) {
+        	gameWon(g);
         } else {
 
             gameOver(g);
@@ -381,10 +407,21 @@ public class Board extends JPanel implements ActionListener {
     private void gameOver(Graphics g) {
         
         String msg = "Game Over";
-        Font small = new Font("Helvetica", Font.BOLD, 14);
+        Font small = new Font("Helvetica", Font.BOLD, 28);
         FontMetrics metr = getFontMetrics(small);
 
-        g.setColor(Color.white);
+        g.setColor(Color.RED);
+        g.setFont(small);
+        g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
+    }
+
+    private void gameWon(Graphics g) {
+        
+        String msg = "Game Won!";
+        Font small = new Font("Helvetica", Font.BOLD, 28);
+        FontMetrics metr = getFontMetrics(small);
+
+        g.setColor(Color.GREEN);
         g.setFont(small);
         g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
     }
@@ -435,43 +472,13 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void checkCollision() {
-    	
-    	
     	if (apple_x >= B_WIDTH || apple_y >= B_HEIGHT)
     		inGame=false;
     	if(apple_x < 0 || apple_y < 0)
     		inGame=false;
-
-//        for (int z = dots; z > 0; z--) {
-
-//            if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
-//                inGame = false;
-//            }
-//        }
-//
-//        if (y[0] >= B_HEIGHT) {
-//            inGame = false;
-//        }
-//
-//        if (y[0] < 0) {
-//            inGame = false;
-//        }
-//
-//        if (x[0] >= B_WIDTH) {
-//            inGame = false;
-//        }
-//
-//        if (x[0] < 0) {
-//            inGame = false;
-//        }
-//        
-//        if(!inGame) {
-//            timer.stop();
-//        }
     }
 
     private void locateApple() {
-
         int r = (int) (1);
         apple_x = ((r * DOT_SIZE));
 
@@ -481,15 +488,23 @@ public class Board extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+    	
         if (inGame) {
 
             checkApple();
             checkCollision();
+            checkFinish();
             move();
         }
 
         repaint();
+    }
+
+    
+    private void checkFinish() {
+    	if(apple_x == finish_x  && apple_y == finish_y) {
+    		gameWon = true;
+    	}
     }
 
     private class TAdapter extends KeyAdapter {
