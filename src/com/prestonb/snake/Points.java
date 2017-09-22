@@ -1,4 +1,4 @@
-package com.prestonb;
+package com.prestonb.snake;
 
 public class Points {
 	int[] x = new int[500];

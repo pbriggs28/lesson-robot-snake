@@ -1,4 +1,4 @@
-package com.prestonb;
+package com.prestonb.snake;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,13 +16,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Board extends JPanel implements ActionListener {
+import com.prestonb.api.Direction;
+import com.prestonb.api.DirectionResolver;
+
+@SuppressWarnings("serial")
+public class RobotGameBoard extends JPanel implements ActionListener {
+	private DirectionResolver directionResolver;
+	
+	// TODO: Leave a trail behind the robot as a path
     private final int B_WIDTH = 450;
     private final int B_HEIGHT = 450;
     private final int DOT_SIZE = 15;
     private final int ALL_DOTS = 900;
     private final int RAND_POS = 29;
-    private final int DELAY = 120;
+    private final int DELAY = 200;
 
     private final int x[] = new int[ALL_DOTS];
     private final int y[] = new int[ALL_DOTS];
@@ -49,7 +56,12 @@ public class Board extends JPanel implements ActionListener {
     private Image apple;
     private Image head;
 
-    public Board() {
+    public RobotGameBoard() {
+    	this(null);
+    }
+
+    public RobotGameBoard(DirectionResolver directionResolver) {
+    	this.directionResolver = directionResolver;
 
         addKeyListener(new TAdapter());
         setBackground(Color.black);
@@ -445,6 +457,38 @@ public class Board extends JPanel implements ActionListener {
 
     private void move() {
 
+    	if(directionResolver != null) {
+    		Direction direction = directionResolver.nextDirection();
+    		
+    		if(direction == null) {
+    			// End of command list, quit game
+    			inGame = false;
+    			return;
+    		}
+    		
+    		upDirection = false;
+    		downDirection = false;
+    		leftDirection = false;
+    		rightDirection = false;
+    		
+    		switch (direction) {
+			case UP:
+				upDirection = true;
+				break;
+			case DOWN:
+				downDirection = true;
+				break;
+			case LEFT:
+				leftDirection = true;
+				break;
+			case RIGHT:
+				rightDirection = true;
+				break;
+
+			default:
+				break;
+			}
+    	}
 //        for (int z = dots; z > 0; z--) {
 //            x[z] = x[(z - 1)];
 //            y[z] = y[(z - 1)];
