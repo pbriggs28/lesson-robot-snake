@@ -13,7 +13,9 @@ public class RobotNavigator implements DirectionResolver {
 	private NavigationCommand currentCommand = null;
 
 	/**
-	 * TODO: Add javadoc about returning null
+	 * @return The robot's next direction, or null if the end of the command list
+	 * has been reached.
+	 * @see #setCommandList
 	 */
 	@Override
 	public Direction nextDirection() {
